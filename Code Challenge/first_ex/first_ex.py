@@ -3,11 +3,18 @@ import os
 
 def find_files_with_suffix(suffix, path):
     matched_files = []
-    for root, _, files in os.walk(path):
-        for file in files:
-            if file.endswith(suffix):
-                matched_files.append(os.path.join(root, file).replace(os.sep, '/'))
-    
+    # List all files and directories in the current path
+    items = os.listdir(path)
+    for item in items:
+        # Get the full path of the item
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path) and item.endswith(suffix):
+            # If the item is a file and its name ends with the specified suffix, add it to the list
+            matched_files.append(item_path.replace(os.sep, '/'))
+        elif os.path.isdir(item_path):
+            # If the item is a path call the function recursively and append the results to the current list.
+            matched_files += find_files_with_suffix(suffix, item_path)
+
     return matched_files
 
 def main():
@@ -19,7 +26,7 @@ def main():
     path = sys.argv[2]
 
     if not os.path.exists(path):
-        print(f"Invalid path: '{path}'. Please provide the entire path.")
+        print(f"Invalid path: '{path}'. Please, make sure the entire path is provided..")
         sys.exit(1)
 
     matched_files = find_files_with_suffix(suffix, path)
@@ -30,7 +37,7 @@ def main():
             print(file)
         print('\n')
     else:
-        print("No matching files found.")
+        print(f"No matching files found with the suffix {suffix}.")
 
 if __name__ == "__main__":
     try:
