@@ -25,8 +25,15 @@ def main():
     suffix = sys.argv[1]
     path = sys.argv[2]
 
+    # Validade Suffix
+    suffix = suffix.split('.')[-1]
+    if suffix == '':
+        print('Please, provide a valid suffix.')
+        sys.exit(1)
+
+    # validate Path
     if not os.path.exists(path):
-        print(f"Invalid path: '{path}'. Please, make sure the entire path is provided..")
+        print(f"Invalid path: '{path}'. Please, make sure the entire path is provided.")
         sys.exit(1)
 
     matched_files = find_files_with_suffix(suffix, path)
