@@ -8,9 +8,10 @@ def find_files_with_suffix(suffix, path):
     for item in items:
         # Get the full path of the item
         item_path = os.path.join(path, item)
-        if os.path.isfile(item_path) and item.endswith(suffix):
-            # If the item is a file and its name ends with the specified suffix, add it to the list
-            matched_files.append(item_path.replace(os.sep, '/'))
+        if os.path.isfile(item_path):
+            # If the item is a file and has the specified extension, add it to the list
+            item_suffix = item.split('.')[-1]
+            if item_suffix==suffix: matched_files.append(item_path.replace(os.sep, '/')) 
         elif os.path.isdir(item_path):
             # If the item is a path call the function recursively and append the results to the current list.
             matched_files += find_files_with_suffix(suffix, item_path)
